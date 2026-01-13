@@ -1,88 +1,676 @@
-// Estilos locales para la textura y el efecto papel
-const styles = {
-  container: {
-    backgroundColor: "#f5f5dc", // Beige base
-    backgroundImage: `url("https://www.transparenttextures.com/patterns/paper-fibers.png")`, // Textura sutil
-    minHeight: "100vh",
-    display: "flex",
-    flexDirection: "column" as const,
-    alignItems: "center",
-    padding: "60px 20px",
-    color: "#333",
-    fontFamily: "'Playfair Display', serif", // Tipografía elegante
-  },
-  divider: {
-    width: "1px",
-    height: "60px",
-    backgroundColor: "#ccc",
-    margin: "0 20px",
-  },
-  // Generamos el efecto de papel arrancado mediante una máscara SVG
-  tornPaperContainer: {
-    position: "relative" as const,
-    width: "100%",
-    maxWidth: "600px",
-    height: "400px",
-    marginTop: "40px",
-    overflow: "hidden",
-    WebkitMaskImage:
-      'url("https://ik.imagekit.io/2v766v7at/torn-paper-mask.png")', // Necesitarás un asset similar o usar el SVG de abajo
-    maskImage: 'url("https://ik.imagekit.io/2v766v7at/torn-paper-mask.png")',
-    maskSize: "100% 100%",
-    WebkitMaskSize: "100% 100%",
-  },
-};
+import Container from "react-bootstrap/Container";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
+import Reproductor from "../../components/player";
+import Timer from "../../components/timer";
+import { useEffect, useState, useRef } from "react";
+import Card from "../../components/card";
+import DressCard from "../../components/dress-card";
+import styles from "./Invitacion.module.css";
 
-const Invitacion = () => {
-  const tornClipPath =
-    "polygon(0% 2.8%, 1% 0.2%, 2% 3.5%, 3% 1.1%, 4% 3.9%, 5% 0.5%, 6% 2.7%, 7% 1.8%, 8% 3.2%, 9% 0.9%, 10% 2.5%, 11% 3.8%, 12% 1.2%, 13% 2.9%, 14% 0.4%, 15% 3.6%, 16% 1.7%, 17% 2.3%, 18% 3.1%, 19% 0.6%, 20% 2.9%, 21% 1.4%, 22% 3.7%, 23% 0.2%, 24% 2.5%, 25% 1.9%, 26% 3.4%, 27% 0.8%, 28% 2.1%, 29% 3.6%, 30% 1.3%, 31% 2.7%, 32% 0.5%, 33% 3.9%, 34% 1.1%, 35% 2.4%, 36% 3.8%, 37% 0.3%, 38% 2.6%, 39% 1.7%, 40% 3.2%, 41% 0.9%, 42% 2.2%, 43% 3.5%, 44% 1.4%, 45% 2.8%, 46% 0.6%, 47% 3.1%, 48% 1.9%, 49% 2.5%, 50% 3.3%, 51% 0.7%, 52% 2.9%, 53% 1.5%, 54% 3.8%, 55% 0.1%, 56% 2.4%, 57% 1.8%, 58% 3.2%, 59% 0.9%, 60% 2.1%, 61% 3.7%, 62% 1.3%, 63% 2.6%, 64% 0.4%, 65% 3.9%, 66% 1.2%, 67% 2.3%, 68% 3.6%, 69% 0.7%, 70% 2.5%, 71% 1.6%, 72% 3.1%, 73% 0.8%, 74% 2.2%, 75% 3.4%, 76% 1.5%, 77% 2.9%, 78% 0.6%, 79% 3.2%, 80% 1.8%, 81% 2.4%, 82% 3.7%, 83% 0.3%, 84% 2.1%, 85% 1.4%, 86% 3.5%, 87% 0.9%, 88% 2.7%, 89% 3.9%, 90% 1.1%, 91% 2.5%, 92% 0.2%, 93% 3.8%, 94% 1.7%, 95% 2.4%, 96% 3.1%, 97% 0.5%, 98% 2.9%, 99% 1.3%, 100% 3.5%, 100% 96.2%, 99% 99.8%, 98% 97.5%, 97% 98.9%, 96% 96.1%, 95% 99.5%, 94% 97.3%, 93% 98.2%, 92% 96.8%, 91% 99.1%, 90% 97.5%, 89% 96.2%, 88% 98.8%, 87% 97.1%, 86% 96.4%, 85% 99.4%, 84% 97.1%, 83% 98.6%, 82% 96.3%, 81% 99.8%, 80% 97.1%, 79% 98.6%, 78% 96.3%, 77% 99.2%, 76% 97.5%, 75% 96.6%, 74% 99.2%, 73% 97.9%, 72% 96.5%, 71% 98.7%, 70% 97.5%, 69% 96.4%, 68% 99.3%, 67% 97.4%, 66% 98.7%, 65% 96.1%, 64% 99.6%, 63% 97.4%, 62% 98.7%, 61% 96.3%, 60% 97.9%, 59% 99.1%, 58% 96.8%, 57% 98.2%, 56% 97.6%, 55% 99.9%, 54% 96.2%, 53% 98.5%, 52% 97.1%, 51% 99.3%, 50% 96.7%, 49% 97.5%, 48% 98.1%, 47% 96.9%, 46% 99.4%, 45% 97.2%, 44% 98.6%, 43% 96.5%, 42% 97.8%, 41% 99.1%, 40% 96.8%, 39% 98.3%, 38% 97.4%, 37% 99.7%, 36% 96.2%, 35% 97.6%, 34% 98.9%, 33% 96.1%, 32% 99.5%, 31% 97.3%, 30% 98.7%, 29% 96.4%, 28% 97.9%, 27% 99.2%, 26% 96.6%, 25% 98.1%, 24% 97.5%, 23% 99.8%, 22% 96.3%, 21% 98.6%, 20% 97.1%, 19% 99.4%, 18% 96.9%, 17% 97.7%, 16% 98.3%, 15% 96.4%, 14% 99.6%, 13% 97.1%, 12% 98.8%, 11% 96.2%, 10% 97.5%, 9% 99.1%, 8% 96.8%, 7% 98.2%, 6% 97.3%, 5% 99.5%, 4% 96.1%, 3% 98.9%, 2% 96.5%, 1% 99.8%, 0% 97.2%)";
+const Home = () => {
+  let flowerStyle = {
+    backgroundRepeat: "repeat-y",
+    backgroundSize: "contain",
+    position: "fixed",
+    height: "100vh",
+  };
+
+  const [visibleBoxes, setVisibleBoxes] = useState<any[]>([]);
+  const visibleBoxesRef: any = useRef([]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      //Paralax lento
+      const scrollPosition = window.scrollY;
+      const parallaxElements = document.querySelectorAll(".parallax");
+
+      parallaxElements.forEach((element: any) => {
+        const translateY = -scrollPosition / 10; // Ajusta la velocidad de paralaje según sea necesario
+        element.style.backgroundPositionY = translateY + "px";
+      });
+
+      // Fading when scroll
+      const windowHeight = window.innerHeight;
+      const boxes = document.querySelectorAll(".box");
+
+      boxes.forEach((box, index) => {
+        const { top } = box.getBoundingClientRect();
+        if (top < windowHeight && !visibleBoxesRef.current.includes(index)) {
+          visibleBoxesRef.current = [...visibleBoxesRef.current, index];
+          setVisibleBoxes([...visibleBoxesRef.current]);
+        }
+      });
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
-    <div style={styles.container}>
-      {/* Primer Row: Texto de bienvenida */}
-      <div style={{ marginBottom: "40px", textAlign: "center" }}>
-        <p
-          style={{
-            fontSize: "1.2rem",
-            letterSpacing: "2px",
-            textTransform: "uppercase",
-          }}
-        >
-          Están cordialmente invitados a celebrar
-        </p>
-      </div>
-
-      {/* Segundo Row: Iniciales con el palito gris */}
+    <>
       <div
-        style={{ display: "flex", alignItems: "center", marginBottom: "30px" }}
-      >
-        <h1 style={{ fontSize: "5rem", fontWeight: "bold", margin: 0 }}>J</h1>
-        <div style={styles.divider}></div>
-        <h1 style={{ fontSize: "5rem", fontWeight: "bold", margin: 0 }}>M</h1>
-      </div>
-
-      {/* Tercer Row: Texto secundario */}
-      <div style={{ marginBottom: "50px", textAlign: "center" }}>
-        <p style={{ fontSize: "1.5rem", fontStyle: "italic" }}>
-          Nuestro Amor y Unión
-        </p>
-      </div>
-
-      {/* Cuarto Row: Imagen con efecto papel arrancado */}
-      <div className="torn-effect" style={{ width: "100%", maxWidth: "500px" }}>
+        className="parallax"
+        style={
+          {
+            ...flowerStyle,
+            backgroundImage: 'url("/common/borde-izq.png")',
+          } as React.CSSProperties
+        }
+      ></div>
+      <div
+        className="parallax"
+        style={
+          {
+            ...flowerStyle,
+            backgroundImage: 'url("/common/borde-der.png")',
+            right: "0",
+          } as React.CSSProperties
+        }
+      ></div>
+      <div style={{ overflowX: "hidden", width: "100%" }}>
         <img
-          src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80"
-          alt="Pareja"
+          src="/common/sea-and-sand.jpg"
+          alt="Sea"
           style={{
-            width: "100%",
-            height: "auto",
-            display: "block",
-            // Aplicamos un clip-path que simula el rasgado si no quieres usar imágenes externas para la máscara
-            clipPath: tornClipPath,
+            position: "fixed",
+            top: 0,
+            left: 0,
+            zIndex: -1,
+            width: "100vw",
+            height: "100vh",
+            objectFit: "cover",
+            objectPosition: "center",
           }}
+          loading="lazy"
         />
       </div>
-    </div>
+      <Container>
+        <Row style={{ paddingTop: "10px" }}>
+          <Reproductor route="/aguilar-pacheco-01/main_audio.mp3" />
+        </Row>
+        <Row>
+          <Col></Col>
+          <Col
+            style={{ display: "flex", justifyContent: "center" }}
+            md={5}
+            xs={10}
+          >
+            <img
+              className={styles.mainGif}
+              src="/clients/aguilar-pacheco-01/nombres-fecha.gif"
+              alt="Christian y Mafer"
+              loading="lazy"
+            />
+          </Col>
+          <Col></Col>
+        </Row>
+        <Row>
+          <Col></Col>
+          <Col
+            md={6}
+            xs={10}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              paddingTop: "30px",
+            }}
+          >
+            <img
+              className={styles.mainImage}
+              src="/clients/aguilar-pacheco-01/main-image.jpg"
+              alt="Wedding"
+              loading="lazy"
+            />
+          </Col>
+          <Col></Col>
+        </Row>
+        <br />
+        <Row>
+          <Col></Col>
+          <Col lg={8} md={8} sm={10} xs={10}>
+            <div className={styles.mainText}>
+              ¡Mi amado es para mí y yo para él! <br /> “Grábame como un sello
+              sobre tu corazón, como un sello sobre tu brazo. Porque es fuerte
+              el amor como la muerte; y la pasión, tenaz como el infierno. Sus
+              flechas son dardos de fuego, como llama divina. No apagarán el
+              amor ni lo ahogarán océanos ni ríos”.
+              <br />
+              Cant 8: 6-7
+            </div>
+          </Col>
+          <Col></Col>
+        </Row>
+        <br />
+        <Row className="px-2">
+          <h1
+            className="title"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            Con la bendición de Dios y de nuestros padres,
+          </h1>
+        </Row>
+        <Row style={{ display: "flex", justifyContent: "center" }}>
+          <Col
+            className={`order-1 order-md-1 ${styles.imgRect} box`}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              opacity: visibleBoxes.includes(0) ? 1 : 0,
+              transform: visibleBoxes.includes(0) ? "scale(1)" : "scale(0.5)",
+            }}
+            lg={4}
+            md={4}
+            // sm={4}
+            xs={8}
+          >
+            <img
+              alt="Padres"
+              src="/clients/aguilar-pacheco-01/padres-2.JPG"
+              loading="lazy"
+            />
+          </Col>
+
+          <Col
+            className={`order-3 order-md-2 ${styles.imgRect} box`}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              opacity: visibleBoxes.includes(1) ? 1 : 0,
+              transform: visibleBoxes.includes(1) ? "scale(1)" : "scale(0.5)",
+            }}
+            lg={4}
+            md={4}
+            // sm={4}
+            xs={8}
+          >
+            <img
+              alt="Padres 2"
+              src="/clients/aguilar-pacheco-01/padres-1.JPG"
+              loading="lazy"
+            />
+          </Col>
+
+          <Col
+            className={`order-2 order-md-3 box`}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              opacity: visibleBoxes.includes(2) ? 1 : 0,
+              transform: visibleBoxes.includes(2) ? "scale(1)" : "scale(0.5)",
+            }}
+            lg={6}
+            md={6}
+            // sm={4}
+            xs={12}
+          >
+            <div className={`${styles.boxInfo} ${styles.izq}`}>
+              Carlos Carlos Apellido Apellido <br />&<br />
+              Nombre Madre Apellido Apellido
+            </div>
+          </Col>
+          <Col
+            className={`order-4 order-md-4 box`}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              opacity: visibleBoxes.includes(3) ? 1 : 0,
+              transform: visibleBoxes.includes(3) ? "scale(1)" : "scale(0.5)",
+            }}
+            lg={6}
+            md={6}
+            // sm={4}
+            xs={12}
+          >
+            <div className={`${styles.boxInfo} ${styles.der}`}>
+              Nombre Apellido Apellido
+              <br />
+              &<br />
+              Nombre Nombre Apellido Apellido
+            </div>
+          </Col>
+        </Row>
+        <br />
+        <Row className="px-4">
+          <h1
+            className="title"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            Tenemos el agrado de invitarte a nuestra boda.
+          </h1>
+        </Row>
+        <Row>
+          <Col></Col>
+          <Col
+            md={6}
+            xs={10}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              paddingTop: "30px",
+            }}
+          >
+            <img
+              className={styles.mainImage}
+              src="/clients/aguilar-pacheco-01/boda-familia.png"
+              alt="Family Wedding"
+              loading="lazy"
+            />
+          </Col>
+          <Col></Col>
+        </Row>
+        <br />
+        <Row className="px-5">
+          <h1
+            className="title"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            ¡Cada vez falta menos para el gran “Sí, Acepto”!
+          </h1>
+        </Row>
+        <Row>
+          <Timer dateStr="2026-10-26T15:00:00" />
+        </Row>
+        <br />
+        <Row
+          className="gap-3"
+          style={{ display: "flex", justifyContent: "center" }}
+        >
+          <Col
+            lg={4}
+            md={5}
+            // sm={4}
+            xs={8}
+            style={{ padding: "0 0" }}
+          >
+            <Card
+              iconFileName={"iglesia"}
+              title={"Ceremonia"}
+              buttonText={"CÓMO LLEGAR"}
+              href={"https://maps.app.goo.gl/pmSspoRZph4RSjL77"}
+              isVisible={visibleBoxes.includes(4)}
+            >
+              26 de Octubre 2024 <br />
+              15:00 <br /> Iglesia Católica Sagrado Corazón de Jesús
+              <br /> La Entrada, Santa Elena
+            </Card>
+          </Col>
+          <Col
+            lg={4}
+            md={5}
+            // sm={4}
+            xs={8}
+            style={{ padding: "0 0" }}
+          >
+            <Card
+              iconFileName={"celebration"}
+              title={"Recepción"}
+              buttonText={"CÓMO LLEGAR"}
+              href={"https://maps.app.goo.gl/WnysuqovptRbwgNRA"}
+              isVisible={visibleBoxes.includes(5)}
+            >
+              26 de Octubre 2024 <br />
+              18:30 <br /> VistaMar Centro de Eventos
+              <br />
+              Capaes, Ballenita
+            </Card>
+          </Col>
+        </Row>
+        <br />
+        <Row
+          className="gap-3"
+          style={{ display: "flex", justifyContent: "center" }}
+        >
+          <Col
+            lg={4}
+            md={5}
+            // sm={4}
+            xs={8}
+            style={{ padding: "0 0" }}
+          >
+            <Card
+              iconFileName={"gift-icon"}
+              title={"Obsequio"}
+              buttonText={"VER DATOS"}
+              href={""}
+              isVisible={visibleBoxes.includes(6)}
+              box={true}
+              xl={6}
+              popUpCont={
+                <>
+                  <img
+                    src="/common/esquina1.png"
+                    style={{
+                      position: "absolute",
+                      top: "0",
+                      left: "0",
+                      width: "75%",
+                      height: "auto",
+                      zIndex: "1",
+                    }}
+                    alt="Flowers"
+                  ></img>
+                  <img
+                    src="/common/esquina2.png"
+                    style={{
+                      position: "absolute",
+                      bottom: "0",
+                      right: "0",
+                      width: "75%",
+                      height: "auto",
+                      zIndex: "1",
+                    }}
+                    alt="Flowers"
+                  ></img>
+                  <div className="p-box">
+                    <div id="ne" className="corner"></div>
+                    <div id="nw" className="corner"></div>
+                    <div id="se" className="corner"></div>
+                    <div id="sw" className="corner"></div>
+                    <img
+                      src="/common/stain.png"
+                      style={{
+                        position: "absolute",
+                        top: "-0.5rem",
+                        left: "-1rem",
+                        width: "105%",
+                        height: "100%",
+                      }}
+                      alt="Stain"
+                    ></img>
+                    <Container
+                      style={{
+                        zIndex: 2,
+                        position: "relative",
+                        paddingTop: "1rem",
+                      }}
+                    >
+                      <Row className="dancing-script d-flex justify-content-center pb-4">
+                        ¡Gracias por tu amor y apoyo!
+                      </Row>
+                      <Row className="fields amatic">
+                        NOMBRE: GARCIA GARCIA ROBERTO ROBERTO
+                      </Row>
+                      <Row className="fields amatic">
+                        <Col className="cuenta-ahorro text-xl-end">
+                          #CUENTA AHORRO:
+                        </Col>
+                        <Col
+                          xs={12}
+                          // sm
+                          md={12}
+                          lg={12}
+                          xl={6}
+                          className="d-flex justify-content-center justify-content-xl-start"
+                        >
+                          <div style={{ paddingRight: "10px" }}>123456789</div>
+                          <div className="d-flex justify-content-center align-items-center">
+                            <img
+                              src="/clients/aguilar-pacheco-01/banco-guayaquil.png"
+                              alt="logo banco"
+                              style={{ height: "25px", width: "auto" }}
+                            ></img>
+                          </div>
+                        </Col>
+                      </Row>
+                      <Row className="fields amatic">
+                        CORREO: username@gmail.com
+                      </Row>
+                      <Row className="fields amatic">C.I.: 09845365841</Row>
+                      <Row className="d-flex justify-content-center amatic nota">
+                        Agradecemos el envío de tu obsequio antes de:
+                        <br />
+                        26-Oct-2024
+                        <br />
+                        No olvides enviarnos tu comprobante
+                        <br />a través del medio por el cual recibiste la
+                        invitación.
+                      </Row>
+                    </Container>
+                  </div>
+                </>
+              }
+            >
+              Tu presencia es nuestro mejor regalo. Si deseas hacernos un
+              obsequio, agradeceríamos mucho tu contribución a nuestra vida
+              juntos. Por favor, considera transferir tu regalo a la siguiente
+              cuenta.
+            </Card>
+          </Col>
+          <Col
+            lg={4}
+            md={5}
+            // sm={4}
+            xs={8}
+            style={{ padding: "0 0" }}
+          >
+            <DressCard
+              title="Código de Vestimenta"
+              isVisible={visibleBoxes.includes(7)}
+              iconFileName={"dress-code"}
+            >
+              ELEGANTE
+              <br />
+              ¡Queridas invitadas!
+              <br />
+              Por favor, reserven el blanco para la novia. 👰🏻‍♀
+              <br /> ¡Nos encantará verlas brillar en todos los demás colores
+              del arcoíris! ✨
+            </DressCard>
+          </Col>
+        </Row>
+        <br />
+        <Row
+          className="gap-3"
+          style={{ display: "flex", justifyContent: "center" }}
+        >
+          <Col
+            lg={4}
+            md={5}
+            // sm={4}
+            xs={8}
+            style={{ padding: "0 0" }}
+          >
+            <Card
+              iconFileName={"checklist"}
+              title={"Confirmación de asistencia"}
+              buttonText={"CONFIRMA AQUÍ"}
+              href={"https://www.google.com.ec"}
+              isVisible={visibleBoxes.includes(8)}
+            >
+              Para nosotros es muy importante que confirmes esta invitación, o
+              que nos cuentes si no nos puedes acompañar
+            </Card>
+          </Col>
+          <Col
+            lg={4}
+            md={5}
+            // sm={4}
+            xs={8}
+            style={{ padding: "0 0" }}
+          >
+            <Card
+              iconFileName={"schedule-icon"}
+              title={"¡No te pierdas nada!"}
+              buttonText={"VER ITINERARIO"}
+              href={""}
+              isVisible={visibleBoxes.includes(9)}
+              box={true}
+              popUpCont={
+                <>
+                  <img
+                    style={{ height: "100%", width: "100%" }}
+                    alt="Itinerario"
+                    src="/clients/aguilar-pacheco-01/itinerario.png"
+                    loading="lazy"
+                  />
+                  <Row
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      marginTop: "0.5rem",
+                      marginLeft: "3.5rem",
+                      marginRight: "3.5rem",
+                    }}
+                  >
+                    <a
+                      className="button"
+                      style={
+                        { "--content": "'Descargar'" } as React.CSSProperties
+                      }
+                      href="https://invitacionesdigitalesan.netlify.app/clients/aguilar-pacheco-01/Itinerario-Boda.jpg"
+                      download="Itinerario-Boda-Aguilar-Pacheco.jpg"
+                    >
+                      <div className="left"></div>
+                      {"Descargar"}
+                      <div className="right"></div>
+                    </a>
+                  </Row>
+                </>
+              }
+            >
+              Descubre el itinerario de momentos memorables que hemos preparado
+              para ti durante nuestra celebración nupcial
+            </Card>
+          </Col>
+        </Row>
+        <br />
+        <Row>
+          <Col></Col>
+          <Col
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              textAlign: "center",
+            }}
+            className="title"
+            lg={8}
+            md={8}
+            sm={10}
+            xs={10}
+          >
+            Coincidir es un lujo pero conectar es un milagro
+          </Col>
+          <Col></Col>
+        </Row>
+        <br />
+        <Row style={{ display: "flex", justifyContent: "center" }}>
+          <Col
+            className={`order-1 order-md-1 ${styles.imgOval} box`}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              opacity: visibleBoxes.includes(10) ? 1 : 0,
+              transform: visibleBoxes.includes(10) ? "scale(1)" : "scale(0.5)",
+            }}
+            lg={5}
+            md={4}
+            // sm={4}
+            xs={8}
+          >
+            <img
+              alt="img_1"
+              src="/clients/aguilar-pacheco-01/1.jpg"
+              loading="lazy"
+            />
+          </Col>
+          <Col
+            className={`order-2 order-md-2 ${styles.imgRect} box`}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              opacity: visibleBoxes.includes(11) ? 1 : 0,
+              transform: visibleBoxes.includes(11) ? "scale(1)" : "scale(0.5)",
+            }}
+            lg={5}
+            md={4}
+            // sm={4}
+            xs={8}
+          >
+            <img
+              alt="img_2"
+              src="/clients/aguilar-pacheco-01/2.jpg"
+              loading="lazy"
+            />
+          </Col>
+        </Row>
+        <br />
+        <Row style={{ display: "flex", justifyContent: "center" }}>
+          <Col
+            className={`order-4 order-md-3 ${styles.imgOval} box`}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              opacity: visibleBoxes.includes(12) ? 1 : 0,
+              transform: visibleBoxes.includes(12) ? "scale(1)" : "scale(0.5)",
+            }}
+            lg={5}
+            md={4}
+            // sm={4}
+            xs={8}
+          >
+            <img
+              alt="img_2"
+              src="/clients/aguilar-pacheco-01/3.jpg"
+              loading="lazy"
+            />
+          </Col>
+          <Col
+            className={`order-3 order-md-4 ${styles.imgRect} box`}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              opacity: visibleBoxes.includes(13) ? 1 : 0,
+              transform: visibleBoxes.includes(13) ? "scale(1)" : "scale(0.5)",
+            }}
+            lg={5}
+            md={4}
+            // sm={4}
+            xs={8}
+          >
+            <img
+              alt="img_1"
+              src="/clients/aguilar-pacheco-01/4.jpg"
+              loading="lazy"
+            />
+          </Col>
+        </Row>
+        <br />
+        <Row
+          style={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <div id="container"></div>
+        </Row>
+      </Container>
+      <div className="contact-section">
+        <Row
+          style={{ "--bs-gutter-x": 0, width: "100%" } as React.CSSProperties}
+        >
+          <Col></Col>
+          <Col lg={8} md={8} sm={10} xs={10}>
+            Invitación digital creada por Carlos Neira
+          </Col>
+          <Col></Col>
+        </Row>
+      </div>
+      <br />
+    </>
   );
 };
 
-export default Invitacion;
+export default Home;
