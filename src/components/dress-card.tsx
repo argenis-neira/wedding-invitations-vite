@@ -30,9 +30,9 @@ const DressCard = ({
         }}
       >
         <img
-          style={{ width: "250px", height: "180px", paddingLeft: "35px" }}
+          className="card-icon"
           alt={title}
-          src={`/common/${iconFileName}.png`}
+          src={`/common/${iconFileName}`}
           loading="lazy"
         />
       </Row>

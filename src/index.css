@@ -14,6 +14,7 @@ body {
   min-width: 320px;
   min-height: 100vh;
   color: #ffffff !important;
+  background-color: transparent;
 }
 
 h1 {
@@ -477,6 +478,20 @@ button:focus-visible {
   text-align: center;
   background-color: #fff;
   width: 100%;
+}
+
+.main-text {
+  color: black;
+  padding: 25px 25px;
+  border-radius: 5px;
+  font-size: 28px;
+  text-align: center;
+  background-color: rgba(239, 255, 255, 0.589);
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.8), -1px 0px 4px rgba(0, 0, 0, 0.4);
+  font-family: "Alex Brush", cursive;
+  font-weight: 400;
+  font-style: normal;
+  animation: fadeInMainImage 4s ease-in-out forwards;
 }
 
 @keyframes flipTop {

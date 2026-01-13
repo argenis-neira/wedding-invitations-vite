@@ -7,29 +7,18 @@ import { useEffect, useState, useRef } from "react";
 import Card from "../../components/card";
 import DressCard from "../../components/dress-card";
 import styles from "./Invitacion.module.css";
+import Parallax from "../../components/parallax";
+import usePageMeta from "../../components/usePageMeta";
+import MainText from "../../components/main-text";
 
 const Home = () => {
-  let flowerStyle = {
-    backgroundRepeat: "repeat-y",
-    backgroundSize: "contain",
-    position: "fixed",
-    height: "100vh",
-  };
+  usePageMeta("Aguilar Pacheco", "/common/love-letter.png");
 
   const [visibleBoxes, setVisibleBoxes] = useState<any[]>([]);
   const visibleBoxesRef: any = useRef([]);
 
   useEffect(() => {
     const handleScroll = () => {
-      //Paralax lento
-      const scrollPosition = window.scrollY;
-      const parallaxElements = document.querySelectorAll(".parallax");
-
-      parallaxElements.forEach((element: any) => {
-        const translateY = -scrollPosition / 10; // Ajusta la velocidad de paralaje según sea necesario
-        element.style.backgroundPositionY = translateY + "px";
-      });
-
       // Fading when scroll
       const windowHeight = window.innerHeight;
       const boxes = document.querySelectorAll(".box");
@@ -52,25 +41,7 @@ const Home = () => {
 
   return (
     <>
-      <div
-        className="parallax"
-        style={
-          {
-            ...flowerStyle,
-            backgroundImage: 'url("/common/borde-izq.png")',
-          } as React.CSSProperties
-        }
-      ></div>
-      <div
-        className="parallax"
-        style={
-          {
-            ...flowerStyle,
-            backgroundImage: 'url("/common/borde-der.png")',
-            right: "0",
-          } as React.CSSProperties
-        }
-      ></div>
+      <Parallax leftImage="borde-izq.png" rightImage="borde-der.png" />
       <div style={{ overflowX: "hidden", width: "100%" }}>
         <img
           src="/common/sea-and-sand.jpg"
@@ -129,23 +100,17 @@ const Home = () => {
           <Col></Col>
         </Row>
         <br />
-        <Row>
-          <Col></Col>
-          <Col lg={8} md={8} sm={10} xs={10}>
-            <div className={styles.mainText}>
-              ¡Mi amado es para mí y yo para él! <br /> “Grábame como un sello
-              sobre tu corazón, como un sello sobre tu brazo. Porque es fuerte
-              el amor como la muerte; y la pasión, tenaz como el infierno. Sus
-              flechas son dardos de fuego, como llama divina. No apagarán el
-              amor ni lo ahogarán océanos ni ríos”.
-              <br />
-              Cant 8: 6-7
-            </div>
-          </Col>
-          <Col></Col>
-        </Row>
+        <MainText>
+          ¡Mi amado es para mí y yo para él! <br /> “Grábame como un sello sobre
+          tu corazón, como un sello sobre tu brazo. Porque es fuerte el amor
+          como la muerte; y la pasión, tenaz como el infierno. Sus flechas son
+          dardos de fuego, como llama divina. No apagarán el amor ni lo ahogarán
+          océanos ni ríos”.
+          <br />
+          Cant 8: 6-7
+        </MainText>
         <br />
-        <Row className="px-2">
+        <Row className="px-4">
           <h1
             className="title"
             style={{
@@ -459,7 +424,7 @@ const Home = () => {
             <DressCard
               title="Código de Vestimenta"
               isVisible={visibleBoxes.includes(7)}
-              iconFileName={"dress-code"}
+              iconFileName={"dress-code.svg"}
             >
               ELEGANTE
               <br />

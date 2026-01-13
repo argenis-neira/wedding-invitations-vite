@@ -1,0 +1,50 @@
+.mainWrapper {
+  background-color: #ece3f8;
+  min-height: 100vh;
+}
+
+.hero {
+  background: linear-gradient(135deg, #663399 0%, #a29bfe 100%);
+  color: white;
+  padding: 100px 0;
+  text-align: center;
+  clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%); /* Efecto diagonal moderno */
+}
+
+.hero h1 {
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Efecto hover para las tarjetas */
+:global(.card) {
+  transition: transform 0.3s ease;
+}
+
+:global(.card:hover) {
+  transform: translateY(-10px);
+}
+
+.footerSection {
+  background-color: #ffffff; /* Fondo blanco limpio */
+  border-top: 1px solid #e9ecef;
+  margin-top: 80px; /* Separación de los templates */
+  padding-top: 40px;
+  color: black
+}
+
+.contactLink {
+  color: #663399; /* El morado de tu marca */
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.contactLink:hover {
+  color: #4b0082;
+  text-decoration: underline;
+}
+
+/* Estilo para los iconos de Bootstrap si los usas */
+:global(.bi) {
+  font-size: 1.1rem;
+}
