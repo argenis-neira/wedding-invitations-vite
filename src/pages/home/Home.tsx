@@ -48,7 +48,7 @@ const Home: React.FC = () => {
           {templates.map((temp) => (
             <Col key={temp.id} md={6} lg={4}>
               <Card className="h-100 shadow-sm border-0">
-                <div style={{ minHeight: "490px" }}>
+                <div style={{ minHeight: "550px" }}>
                   <Card.Img variant="top" src={temp.image} alt={temp.title} />
                   <Card.Body className="d-flex flex-column">
                     <Card.Title className="fw-bold">{temp.title}</Card.Title>
@@ -60,7 +60,7 @@ const Home: React.FC = () => {
                 <Card.Footer className="border-0">
                   <Button
                     variant="primary"
-                    className="w-100 mt-3"
+                    className="w-100"
                     onClick={() => navigate(temp.path)}
                   >
                     Ver Demo

@@ -44,7 +44,7 @@ const TemplateXV: React.FC = () => {
       <main className={styles.content}>
         <Container>
           <Row style={{ paddingTop: "10px" }}>
-            <Reproductor route="/aguilar-pacheco-01/main_audio.mp3" />
+            <Reproductor route="/james/cuan_lejos_moana.mp3" />
           </Row>
           <Row style={{ paddingTop: "50px" }}>
             <h1
