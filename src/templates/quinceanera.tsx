@@ -112,9 +112,9 @@ const TemplateXV: React.FC = () => {
           <div className={styles.contentGroup}>
             <h2 className={styles.mainTitle}>Nuestros Padrinos</h2>
             <div className={styles.familyBlock}>
-              Srta. Johana Alexandra Lucintuña Siglema
+              María del Carmen Yance Roca
               <br />
-              Sr. Collaguazo Rodríguez Michael Rafael
+              Uriel Agustín Briones Bermello
             </div>
           </div>
 
@@ -161,7 +161,7 @@ const TemplateXV: React.FC = () => {
             >
               31 de Enero 2026 <br />
               18:00 <br /> Santuario Católico Nuestra Señora de La Esperanza
-              <br /> Parroquia San Antonio de Padua, Libertad
+              <br /> Parroquia San Antonio de Padua, La Libertad
             </Card>
           </Col>
           <Col
@@ -175,13 +175,13 @@ const TemplateXV: React.FC = () => {
               iconFileName={"celebration"}
               title={"Recepción"}
               buttonText={"CÓMO LLEGAR"}
-              href={"https://maps.app.goo.gl/WnysuqovptRbwgNRA"}
+              href={"https://maps.app.goo.gl/wrDA9zZLZjW38Hy89"}
               isVisible={true}
             >
-              26 de Octubre 2024 <br />
-              18:30 <br /> VistaMar Centro de Eventos
+              31 de Enero 2026 <br />
+              20:00 <br /> Salón de eventos Isabela
               <br />
-              Capaes, Ballenita
+              Ciudadela Santa Paula, José Luis Tamayo
             </Card>
           </Col>
         </Row>
