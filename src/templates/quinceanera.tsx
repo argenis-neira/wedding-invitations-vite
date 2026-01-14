@@ -230,7 +230,29 @@ const TemplateXV: React.FC = () => {
           <span className={styles.sparkle}>✦</span>
           <div className={styles.line}></div>
         </div>
+
+        <Row style={{ display: "flex", justifyContent: "center" }}>
+          <Col
+            className={styles.imgRect}
+            lg={5}
+            md={4}
+            // sm={4}
+            xs={8}
+          >
+            <img
+              alt="img_1"
+              src="/clients/james/second-image.jpeg"
+              loading="lazy"
+              style={{ scale: "0.75" }}
+            />
+          </Col>
+        </Row>
       </Container>
+      <div className={styles.spacer}>
+        <div className={styles.line}></div>
+        <span className={styles.sparkle}>✦</span>
+        <div className={styles.line}></div>
+      </div>
       <div className="contact-section">
         <Row
           style={{ "--bs-gutter-x": 0, width: "100%" } as React.CSSProperties}
