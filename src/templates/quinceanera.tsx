@@ -233,18 +233,56 @@ const TemplateXV: React.FC = () => {
 
         <Row style={{ display: "flex", justifyContent: "center" }}>
           <Col
-            className={styles.imgRect}
+            className={`${styles.imgOval} box`}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+            }}
             lg={5}
             md={4}
             // sm={4}
             xs={8}
           >
-            <img
-              alt="img_1"
-              src="/clients/james/second-image.jpeg"
-              loading="lazy"
-              style={{ scale: "0.75" }}
-            />
+            <img alt="img_1" src="/clients/james/1.jpeg" loading="lazy" />
+          </Col>
+          <Col
+            className={`${styles.imgRect} box`}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+            lg={5}
+            md={4}
+            // sm={4}
+            xs={8}
+          >
+            <img alt="img_2" src="/clients/james/2.jpeg" loading="lazy" />
+          </Col>
+          <Col
+            className={`order-4 order-md-3 ${styles.imgRect} box`}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+            lg={5}
+            md={4}
+            // sm={4}
+            xs={8}
+          >
+            <img alt="img_1" src="/clients/james/4.jpeg" loading="lazy" />
+          </Col>
+          <Col
+            className={`order-3 order-md-4 ${styles.imgOval} box`}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+            lg={5}
+            md={4}
+            // sm={4}
+            xs={8}
+          >
+            <img alt="img_2" src="/clients/james/3.jpeg" loading="lazy" />
           </Col>
         </Row>
       </Container>
