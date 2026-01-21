@@ -215,6 +215,30 @@ const TemplateXV: React.FC = () => {
             xs={8}
             style={{ padding: "0 0" }}
           >
+            <Card
+              iconFileName={"checklist"}
+              title={"Confirmación de asistencia"}
+              buttonText={"CONFIRMA AQUÍ"}
+              href={"https://forms.gle/Ztfqnagq5FwLWkTy5"}
+              isVisible={true}
+            >
+              Para nosotros es muy importante que confirmes esta invitación, o
+              que nos cuentes si no nos puedes acompañar
+            </Card>
+          </Col>
+        </Row>
+        <br />
+        <Row
+          className="gap-3"
+          style={{ display: "flex", justifyContent: "center" }}
+        >
+          <Col
+            lg={4}
+            md={5}
+            // sm={4}
+            xs={8}
+            style={{ padding: "0 0" }}
+          >
             <DressCard
               title="Código de Vestimenta"
               isVisible={true}
